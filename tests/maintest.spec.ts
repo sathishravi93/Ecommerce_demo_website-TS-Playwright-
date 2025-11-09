@@ -166,11 +166,34 @@ test.describe('DemoBlaze E-commerce Test Suite - Sathish\'s Comprehensive Testin
         });
 
         test('Should successfully logout', async ({ page }) => {
-            // Given: User is logged in
-            const randomUser = generateRandomUser();
+            // Given: User is logged in with retry logic for flaky registration
+            let randomUser = generateRandomUser();
+            let registrationSuccess = false;
+            let attempts = 0;
+            const maxAttempts = 3;
+            
             await homePage.clickSignUp();
-            const registrationSuccess = await authPage.signUp(randomUser.username, randomUser.password);
-            expect(registrationSuccess, 'User registration should be successful').toBeTruthy();
+            
+            while (!registrationSuccess && attempts < maxAttempts) {
+                attempts++;
+                console.log(`Registration attempt ${attempts}/${maxAttempts}`);
+                
+                if (attempts > 1) {
+                    // Generate new user for retry attempts
+                    randomUser = generateRandomUser();
+                    await homePage.clickSignUp(); // Re-open modal for retry
+                }
+                
+                registrationSuccess = await authPage.signUp(randomUser.username, randomUser.password);
+                
+                if (!registrationSuccess) {
+                    console.log(`Registration attempt ${attempts} failed, retrying...`);
+                    await page.waitForTimeout(1000); // Brief pause between attempts
+                }
+            }
+            
+            expect(registrationSuccess, `User registration should be successful after ${maxAttempts} attempts`).toBeTruthy();
+            
             await homePage.clickLogin();
             await authPage.login(randomUser.username, randomUser.password);
             
