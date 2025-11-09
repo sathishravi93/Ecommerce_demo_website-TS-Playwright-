@@ -1,0 +1,26 @@
+{
+  "name": "demoblaze-test-automation",
+  "version": "1.0.0",
+  "description": "DemoBlaze E-commerce Test Automation Framework with Playwright",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "report": "npx playwright show-report",
+    "install:browsers": "npx playwright install"
+  },
+  "keywords": ["playwright", "testing", "automation", "e-commerce", "demoblaze", "typescript", "page-object-model", "sathish-kumar"],
+  "author": "Sathish Kumar <sathish.qa.engineer@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "@types/node": "^20.10.0",
+    "allure-playwright": "^2.15.1",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
